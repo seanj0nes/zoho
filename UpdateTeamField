@@ -1,0 +1,25 @@
+//Concatenate resources from subform to resource needed
+
+void UpdateTeamField(Int accId)
+{
+    //get deal
+    deal = zoho.crm.getRecordById("Deals",accId);
+    
+    team = "";
+    
+    //get resources from deal
+    resource = ifnull(deal.get("Resources"),"");
+    
+    for each  item in resource
+    {
+      team = team + item.get("Resource_type").get("name") + ": ";
+      team = team + item.get("Allocation_of_resources") + "% | ";
+    }
+    
+    resources = Map();
+    resources.put("RRHH_para_MT",team);
+
+    //update record
+    update = zoho.crm.updateRecord("Deals",accId,resources);
+    info update;
+}
